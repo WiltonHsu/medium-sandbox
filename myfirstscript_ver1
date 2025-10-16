@@ -1,0 +1,36 @@
+// Declaring parameters
+params.inputDir = "Hello World"
+params.outputDir = "/Users/wei-tunghsu/Downloads"
+
+
+workflow {
+    // Print 'Hello Word' in terminal
+    PRINT_HELLO_WORLD() | view
+
+    // Download text file of 'Hello World' in local Downloads folder
+    DOWNLOAD_HELLO_WORLD() | view
+}
+
+process PRINT_HELLO_WORLD {
+    // input not necessary here
+   
+    output:
+        stdout
+
+    script:
+    """
+    echo ${params.inputDir}
+    """
+}
+
+process DOWNLOAD_HELLO_WORLD {
+    publishDir params.outputDir, mode: 'copy'
+
+    output:
+        path("hello_world_nf_output.txt.txt")
+
+    script:
+    """
+    echo "${params.inputDir}" > $path
+    """
+}
